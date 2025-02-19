@@ -19,8 +19,8 @@
 ![drawio2](https://github.com/user-attachments/assets/cd5bb990-c4b6-4c34-8477-1e75c0c68cf5)
 
 ### Стэк:
-- Java 21
-- Spring 3.3.1
+- Kotlin 2.1.0
+- Spring 3.4.2
 - Hibernate (@Query, Specification, @EntityGraph)
 - Scheduler (+ @SchedulerLock) (**main**)
 - CircuitBreaker, Retry (**main**)
