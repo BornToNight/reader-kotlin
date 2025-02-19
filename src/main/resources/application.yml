@@ -1,0 +1,107 @@
+spring:
+  application:
+    name: reader-kotlin
+  config:
+    import: optional:file:.env[.properties]
+  security:
+    user:
+      name: ${SPRING_USER}
+      password: ${SPRING_PASSWORD}
+  boot:
+    admin:
+      client:
+        url: http://${SPRING_ADMIN_HOST}:5004
+        # от server
+        username: ${SPRING_ADMIN_USER}
+        password: ${SPRING_ADMIN_PASSWORD}
+        instance:
+          prefer-ip: true
+          metadata:
+            # от server
+            user:
+              name: ${SPRING_ADMIN_USER}
+              password: ${SPRING_ADMIN_PASSWORD}
+
+  data:
+    web:
+      pageable:
+        default-page-size: 50
+        max-page-size: 50
+        one-indexed-parameters: true
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST}:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      properties:
+        hibernate:
+          format_sql: true
+      enable_lazy_load_no_trans: true
+      event:
+        merge:
+          entity_copy_observer: allow
+    open-in-view: false # EXPLAIN_V Держать ли открытой транзакцию пока открыт HTTP запрос
+  liquibase:
+    enabled: false
+    change-log: classpath:db/changelog/db-changelog.yml
+  docker:
+    compose:
+      enabled: false
+      skip:
+        in-test: false
+
+# Настройка Actuator
+management:
+  info:
+    env:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*" # EXPLAIN_V Открыть у актуатора больше запросов для метрик
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+
+logging:
+  path: ${user.home}/logs/main
+  level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: TRACE
+
+grpc:
+  server:
+    url: ${GRPC_HOST}
+    port: 5002
+
+---
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+    activate:
+      on-profile: "prod"
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: WARN
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: INFO
