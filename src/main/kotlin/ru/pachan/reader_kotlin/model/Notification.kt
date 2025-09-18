@@ -1,7 +1,13 @@
 package ru.pachan.reader_kotlin.model
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.SequenceGenerator
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "notifications")
@@ -21,6 +27,6 @@ class Notification(
     )
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notifications_seq")
     @Column(name = "notification_id")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
     val id: Long = 0,
 )
