@@ -7,6 +7,7 @@ import com.google.rpc.Status
 import io.grpc.protobuf.StatusProto.toStatusException
 import io.grpc.stub.StreamObserver
 import net.devh.boot.grpc.server.service.GrpcService
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import ru.pachan.grpc.NotificationServiceGrpc.NotificationServiceImplBase
 import ru.pachan.grpc.Reader
@@ -64,12 +65,10 @@ class NotificationService(
     ) {
         var notification = Notification()
         try {
-            notification = repository.findById(request!!.notificationId).orElseThrow {
-                throw RequestException(
-                    ExceptionEnum.OBJECT_NOT_FOUND.message,
-                    HttpStatus.GONE
-                )
-            }
+            notification = repository.findByIdOrNull(request!!.notificationId) ?: throw RequestException(
+                ExceptionEnum.OBJECT_NOT_FOUND.message,
+                HttpStatus.GONE
+            )
             val grpcNotification = Reader.Notification.newBuilder()
                 .setNotificationId(notification.id)
                 .setPersonId(notification.personId)
