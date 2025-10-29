@@ -27,7 +27,7 @@ class NotificationService(
         responseObserver: StreamObserver<Reader.FindByPersonIdNotificationResponse?>?,
     ) {
 
-        var notification = Notification()
+        var notification: Notification
         try {
             notification = repository.findByPersonId(request!!.personId) ?: throw RequestException(
                 ExceptionEnum.OBJECT_NOT_FOUND.message,
@@ -63,7 +63,7 @@ class NotificationService(
         request: Reader.FindByIdNotificationRequest?,
         responseObserver: StreamObserver<Reader.FindByIdNotificationResponse?>?,
     ) {
-        var notification = Notification()
+        var notification: Notification
         try {
             notification = repository.findByIdOrNull(request!!.notificationId) ?: throw RequestException(
                 ExceptionEnum.OBJECT_NOT_FOUND.message,

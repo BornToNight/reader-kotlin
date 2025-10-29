@@ -14,10 +14,10 @@ import jakarta.persistence.Table
 class Notification(
 
     @Column(nullable = false, unique = true)
-    val personId: Long = 0,
+    val personId: Long,
 
     @Column(nullable = false)
-    var count: Long = 0,
+    var count: Long,
 
     @Id
     @SequenceGenerator(
