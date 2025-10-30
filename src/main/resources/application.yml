@@ -82,6 +82,9 @@ logging:
           jdbc:
             bind: TRACE
 
+server:
+  port: 5012
+
 grpc:
   server:
     url: ${GRPC_HOST}
