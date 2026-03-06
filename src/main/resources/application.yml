@@ -3,10 +3,6 @@ spring:
     name: reader-kotlin
   config:
     import: optional:file:.env[.properties]
-  security:
-    user:
-      name: ${SPRING_USER}
-      password: ${SPRING_PASSWORD}
   boot:
     admin:
       client:
@@ -16,12 +12,7 @@ spring:
         password: ${SPRING_ADMIN_PASSWORD}
         instance:
           prefer-ip: true
-          metadata:
-            # от server
-            user:
-              name: ${SPRING_ADMIN_USER}
-              password: ${SPRING_ADMIN_PASSWORD}
-
+          management-base-url: http://${SERVICE_HOST}:${management.server.port}
   data:
     web:
       pageable:
@@ -56,6 +47,21 @@ spring:
 
 # Настройка Actuator
 management:
+  server:
+    port: 5102
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        liveness:
+          include: "livenessState,ping"
+          show-components: always
+          show-details: always
+        readiness:
+          include: "readinessState,ping,db"
+          show-components: always
+          show-details: always
   info:
     env:
       enabled: true
@@ -99,6 +105,18 @@ spring:
       on-profile: "prod"
   jpa:
     show-sql: false
+
+# EXPLAIN_V Без Spring Admin достаточно было бы 2 ЭП этих
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: prometheus,health
+#  endpoint:
+#    prometheus:
+#      enabled: true
+#    health:
+#      enabled: true
 
 logging:
   level:
