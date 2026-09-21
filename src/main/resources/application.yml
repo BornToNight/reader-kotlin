@@ -54,12 +54,17 @@ management:
       probes:
         enabled: true
       group:
-        liveness:
-          include: "livenessState,ping"
+        readiness:
+          include:
+            - "readinessState"
+            - "ping"
+            - "db"
           show-components: always
           show-details: always
-        readiness:
-          include: "readinessState,ping,db"
+        liveness:
+          include:
+            - "livenessState"
+            - "ping"
           show-components: always
           show-details: always
   info:
